@@ -85,8 +85,8 @@
 "uboot-extra-env.dfu raw 0xFF000 0x1000\\\\;" \
 "uboot-env.dfu raw 0x100000 0x20000\\\\;" \
 "spare.dfu raw 0x120000 0xE0000\0" \
-"dfu_sf=gpio set 15;set stdout serial@e0001000;echo Entering DFU SF mode ... && run dfu_sf_info && dfu 0 sf 0:0:40000000:0 && if test -n ${dfu_alt_num} && test ${dfu_alt_num} = 1; "\
-"then set fit_size ${filesize} && set dfu_alt_num && env save; fi;gpio clear 15;\0"
+"dfu_sf=set stdout serial@e0000000;echo Entering DFU SF mode ... && run dfu_sf_info && dfu 0 sf 0:0:40000000:0 && if test -n ${dfu_alt_num} && test ${dfu_alt_num} = 1; "\
+"then set fit_size ${filesize} && set dfu_alt_num && env save; fi;\0"
 
 
 /* NOR */
@@ -346,8 +346,8 @@
 		"fi; " \
 		"envversion;setenv bootargs console=ttyPS0,115200 maxcpus=${maxcpus} rootfstype=ramfs root=/dev/ram0 rw earlyprintk clk_ignore_unused uboot=\"${uboot-version}\" && " \
 		"bootm ${fit_load_address}#${fit_config} || echo BOOT failed entering DFU mode ... && run dfu_sf \0" \
-	"qspiboot=set stdout nulldev;adi_hwref;test -n $PlutoRevA || gpio input 14 && set stdout serial@e0001000 && sf probe && sf protect lock 0 100000 && run dfu_sf;  " \
-		"set stdout serial@e0001000;" \
+	"qspiboot=set stdout nulldev;adi_hwref;" \
+		"set stdout serial@e0000000;" \
 		"itest *f8000258 == 480003 && run clear_reset_cause && run dfu_sf; " \
 		"itest *f8000258 == 480007 && run clear_reset_cause && run ramboot_verbose; " \
 		"itest *f8000258 == 480006 && run clear_reset_cause && run qspiboot_verbose; " \
@@ -355,7 +355,7 @@
 		"echo Booting silently && set stdout nulldev; " \
 		"run read_sf && run adi_loadvals; " \
 		"envversion;setenv bootargs console=ttyPS0,115200 maxcpus=${maxcpus} rootfstype=ramfs root=/dev/ram0 rw quiet loglevel=4 clk_ignore_unused uboot=\"${uboot-version}\" && " \
-		"bootm ${fit_load_address}#${fit_config} || set stdout serial@e0001000;echo BOOT failed entering DFU mode ... && sf protect lock 0 100000 && run dfu_sf \0" \
+		"bootm ${fit_load_address}#${fit_config} || set stdout serial@e0000000;echo BOOT failed entering DFU mode ... && sf protect lock 0 100000 && run dfu_sf \0" \
 	"jtagboot=env default -a;sf probe && sf protect unlock 0 100000 && run dfu_sf; \0" \
 	"uenvboot=" \
 		"if run loadbootenv; then " \

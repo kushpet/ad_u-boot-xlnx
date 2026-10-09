@@ -113,14 +113,11 @@ int board_late_init(void)
 #include <environment.h>
 int misc_init_r(void)
 {
-#define BUTTON_GPIO 14
-
-	gpio_request(BUTTON_GPIO, "SWITCH");
-	gpio_direction_input(BUTTON_GPIO);
-
-	if (!gpio_get_value(BUTTON_GPIO))
-		set_default_env("Button pressed: Using default environment\n");
-
+	/*
+	 * Pluto has a button on MIO14 that resets the environment. On LibreSDR
+	 * MIO14 is UART0 RX (console), which may read low and then makes
+	 * U-Boot ignore the environment saved in QSPI. No button check here.
+	 */
 	return 0;
 }
 #endif
