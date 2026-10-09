@@ -260,7 +260,8 @@
 	"fdt_high=0x20000000\0"	\
 	"initrd_high=0x20000000\0"	\
 	"bootenv=uEnv.txt\0" \
-	"maxcpus=1\0" \
+	/* LibreSDR: both Cortex-A9 cores (ADI default for Pluto is 1) */ \
+	"maxcpus=2\0" \
 	"clear_reset_cause=mw f8000008 df0d && mw f8000258 00400000 && mw f8000004 767b\0" \
 	"loadbootenv=load mmc 0 ${loadbootenv_addr} ${bootenv}\0" \
 	"importbootenv=echo Importing environment from SD ...; " \
